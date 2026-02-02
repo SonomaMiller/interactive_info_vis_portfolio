@@ -1,4 +1,4 @@
-// Instance-mode sketch for tab 2
+// Instance-mode sketch for tab 2: spiral clock
 registerSketch('sk2', function (p) {
   p.setup = function () {
     p.createCanvas(p.windowWidth, p.windowHeight);

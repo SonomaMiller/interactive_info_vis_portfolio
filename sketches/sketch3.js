@@ -1,4 +1,4 @@
-// Instance-mode sketch for tab 3
+// Instance-mode sketch for tab 3: pie chart tasks
 registerSketch('sk3', function (p) {
   p.setup = function () {
     p.createCanvas(p.windowWidth, p.windowHeight);
