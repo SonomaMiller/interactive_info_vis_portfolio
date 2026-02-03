@@ -1,13 +1,7 @@
 // Instance-mode sketch for tab 2: spiral clock
 registerSketch('sk2', function (p) {
   // const spiralclock = (p) => {
-  let angle = 0; // starting angle
-  let radius = 0; // radius of the circle motion
-  let pixelsPerRotation = 10; //increase the radius
-  let totalFrames = 0; // Tracks active duration
-
-  let previousX; // declared previous x position variable
-  let previousY; // declared previous y position variable
+  let startTime = 0; // start time in milliseconds
 
   p.setup = function () {
     p.createCanvas(p.windowWidth, p.windowHeight);
@@ -18,50 +12,53 @@ registerSketch('sk2', function (p) {
   };
 
   p.draw = function () {
-    // calculate the x and y coordinates of the circle
-    let x = p.width / 2 + p.cos(angle) * radius;
-    let y = p.height / 2 + p.sin(angle) * radius;
+    // clear frame
+    p.background(255);
 
-    // increase the angle to create motion; 1 rotation every 60 seconds
-    let dAngle = (p.TWO_PI / 10) * (p.deltaTime / 1000); // 1 rotation per 10s
-    angle += dAngle;
+    // time since start (seconds)
+    let tNow = (p.millis() - startTime) / 1000;
 
-    // increase the radius to make it grow as spiral
-    radius += pixelsPerRotation * (dAngle / p.TWO_PI);
+    // spiral controls
+    let secondsPerRotation = 10;
+    let pixelsPerRotation = 8;
 
-    // update total frames
-    totalFrames++;
+    // how finely to sample the spiral
+    let step = 0.02; // seconds per segment (smaller = smoother)
 
-    // draw the circle
+    let cx = p.width / 2;
+    let cy = p.height / 2;
+
     p.stroke(0);
     p.strokeWeight(2);
-    if (typeof previousX !== 'undefined' && typeof previousY !== 'undefined') {
-      p.line(x, y, previousX, previousY);  //throws a wild error in the first loop, but work from the second loop :D
+    p.noFill();
+
+    let prevX, prevY;
+
+    for (let t = 0; t <= tNow; t += step) {
+      let angle = p.TWO_PI * (t / secondsPerRotation);
+      let radius = pixelsPerRotation * (angle / p.TWO_PI);
+
+      let x = cx + p.cos(angle) * radius;
+      let y = cy + p.sin(angle) * radius;
+
+      if (prevX !== undefined) {
+        p.line(prevX, prevY, x, y);
+      }
+
+      prevX = x;
+      prevY = y;
     }
 
-    // save current position as previous position
-    previousX = x;
-    previousY = y;
-
-    // calculate minutes and seconds based on 60fps
-    let totalSeconds = p.floor(totalFrames / 60);
+    // timer text (MM:SS)
+    let totalSeconds = p.floor(tNow);
     let minutes = p.floor(totalSeconds / 60);
     let seconds = totalSeconds % 60;
 
-    // format string to add leading zero to seconds (e.g., 01:05)
-    let timeString = minutes + ":" + p.nf(seconds, 2);
-
-    p.push();
-    // draw a small white rectangle behind text to keep it readable
-    // erase numbers right before drawing new ones
     p.noStroke();
     p.fill(255);
-    p.rectMode(p.CENTER);
-    p.rect(p.width / 2, p.height - 50, 150, 50);
-
+    p.rect(cx, p.height - 50, 150, 50);
     p.fill(0);
-    p.text(timeString, p.width / 2, p.height - 50);
-    p.pop();
+    p.text(minutes + ":" + p.nf(seconds, 2), cx, p.height - 50);
   };
 
   p.windowResized = function () {
