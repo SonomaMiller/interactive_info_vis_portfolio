@@ -40,18 +40,14 @@ registerSketch('sk4', function (p) {
   };
 
   function startTimer() {
-    if (!running) {
-      // if first time, read input values
-      if (remainingSeconds <= 0) {
-        let mins = parseInt(minutesInput.value()) || 0;
-        let secs = parseInt(secondsInput.value()) || 0;
-        totalSeconds = mins * 60 + secs;
-        remainingSeconds = totalSeconds;
-        exploded = false;
-      }
-      running = true;
-      lastMillis = p.millis();
-    }
+    let mins = parseInt(minutesInput.value()) || 0;
+    let secs = parseInt(secondsInput.value()) || 0;
+    totalSeconds = mins * 60 + secs;
+    remainingSeconds = totalSeconds;
+
+    running = true;
+    lastMillis = p.millis();
+    exploded = false;
   }
 
   function pauseTimer() {
