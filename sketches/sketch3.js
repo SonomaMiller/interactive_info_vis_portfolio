@@ -4,12 +4,14 @@ registerSketch('sk3', function (p) {
 
   p.setup = function () {
     p.createCanvas(600, 600);
+    p.background(255);
     cx = p.width / 2;
     cy = p.height / 2;
     r = 220;
     p.noLoop();
     p.textAlign(p.CENTER, p.CENTER);
     p.textSize(12);
+    p.rectMode(p.CENTER);
   };
 
   function hourToAngle(hour) {
