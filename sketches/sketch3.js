@@ -44,9 +44,40 @@ registerSketch('sk3', function (p) {
     p.pop();
   }
 
+  // add hour ticks
+  function drawTicks() {
+    p.push();
+    p.stroke(0);
+    p.strokeWeight(1);
+    for (let h = 0; h < 24; h++) {
+      let angle = hourToAngle(h);
+      let innerR = r; // start of tick
+      let outerR = r + 10; // end of tikc
+      let x1 = cx + p.cos(angle) * innerR;
+      let y1 = cy + p.sin(angle) * innerR;
+      let x2 = cx + p.cos(angle) * outerR;
+      let y2 = cy + p.sin(angle) * outerR;
+      p.line(x1, y1, x2, y2);
+
+      // hour labels
+      let lx = cx + p.cos(angle) * (outerR + 10);
+      let ly = cy + p.sin(angle) * (outerR + 10);
+      p.push();
+      p.translate(lx, ly);
+
+      p.noStroke();
+      p.fill(0);
+      p.text(h, 0, 0);
+      p.pop();
+    }
+    p.pop();
+  }
+
   // add tasks/activities
   p.draw = function () {
     p.background(255);
+
+    drawTicks();
 
     slice(23, 24, "sleep", "pink");
     slice(0, 8, "sleep", "pink");
