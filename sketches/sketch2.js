@@ -1,6 +1,5 @@
 // Instance-mode sketch for tab 2: spiral clock
 registerSketch('sk2', function (p) {
-  // const spiralclock = (p) => {
   let startTime = 0; // start time in milliseconds
 
   p.setup = function () {
@@ -19,7 +18,7 @@ registerSketch('sk2', function (p) {
     let tNow = (p.millis() - startTime) / 1000;
 
     // spiral controls
-    let secondsPerRotation = 10;
+    let secondsPerRotation = 60;
     let pixelsPerRotation = 8;
 
     // how finely to sample the spiral
