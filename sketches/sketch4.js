@@ -7,6 +7,7 @@ registerSketch('sk4', function (p) {
   let remainingSeconds = 0;
   let running = false;
   let lastMillis = 0;
+  let exploded = false;
 
   p.setup = function () {
     p.createCanvas(400, 400);
@@ -19,7 +20,7 @@ registerSketch('sk4', function (p) {
     minutesInput.position(100, 300);
     minutesInput.size(50);
 
-    secondsInput = p.createInput('0');
+    secondsInput = p.createInput('');
     secondsInput.attribute('placeholder', 'seconds');
     secondsInput.position(250, 300);
     secondsInput.size(50);
@@ -46,6 +47,7 @@ registerSketch('sk4', function (p) {
         let secs = parseInt(secondsInput.value()) || 0;
         totalSeconds = mins * 60 + secs;
         remainingSeconds = totalSeconds;
+        exploded = false;
       }
       running = true;
       lastMillis = p.millis();
@@ -58,6 +60,7 @@ registerSketch('sk4', function (p) {
 
   function restartTimer() {
     running = false;
+    exploded = false;
     remainingSeconds = totalSeconds;
   }
 
@@ -98,6 +101,25 @@ registerSketch('sk4', function (p) {
     p.pop();
   }
 
+  function drawExplosion() {
+    p.push();
+    p.translate(p.width / 2, p.height / 2);
+    let numRays = 60;
+    let maxRadius = p.width * 0.8;
+    for (let i = 0; i < numRays; i++) {
+      let angle = (p.TWO_PI / numRays) * i;
+      let rayLength = maxRadius * p.random(0.7, 1);
+      let col;
+      if (i % 3 === 0) col = 'red';
+      else if (i % 3 === 1) col = 'orange';
+      else col = 'yellow';
+      p.stroke(col);
+      p.strokeWeight(4);
+      p.line(0, 0, p.cos(angle) * rayLength, p.sin(angle) * rayLength);
+    }
+    p.pop();
+  }
+
   p.draw = function () {
     p.background(240);
 
@@ -112,14 +134,25 @@ registerSketch('sk4', function (p) {
       }
     }
 
-    let bombSize = 150;
-    drawBomb(p.width / 2, p.height / 2, bombSize);
+    // Check if exploded
+    if (totalSeconds > 0 && remainingSeconds <= 0 && !exploded) {
+      exploded = true;
+    }
 
-    // Display timer on top of bomb
+    // Draw explosion if exploded
+    if (exploded) {
+      drawExplosion();
+    } else {
+      // Draw bomb normally
+      let bombSize = 150;
+      drawBomb(p.width / 2, p.height / 2, bombSize);
+    }
+
+    // Display timer on top of bomb/explosion
     let displayMins = Math.floor(remainingSeconds / 60);
     let displaySecs = remainingSeconds % 60;
     let timeStr = p.nf(displayMins, 2) + ':' + p.nf(displaySecs, 2);
-    p.fill("white");
+    p.fill(255);
     p.textSize(32);
     p.text(timeStr, p.width / 2, p.height / 2);
   };
