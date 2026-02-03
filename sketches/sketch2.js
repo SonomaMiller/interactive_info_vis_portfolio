@@ -4,15 +4,14 @@ registerSketch('sk2', function (p) {
 
   p.setup = function () {
     p.createCanvas(p.windowWidth, p.windowHeight);
-    p.background(255);
+    p.background("white");
     p.textAlign(p.CENTER);
     p.textSize(24);
     p.rectMode(p.CENTER);
   };
 
   p.draw = function () {
-    // clear frame
-    p.background(255);
+    p.background("white");
 
     // time since start (seconds)
     let tNow = (p.millis() - startTime) / 1000;
@@ -21,8 +20,7 @@ registerSketch('sk2', function (p) {
     let secondsPerRotation = 60;
     let pixelsPerRotation = 8;
 
-    // how finely to sample the spiral
-    let step = 0.02; // seconds per segment (smaller = smoother)
+    let step = 0.02; // smaller = smoother spiral
 
     let cx = p.width / 2;
     let cy = p.height / 2;

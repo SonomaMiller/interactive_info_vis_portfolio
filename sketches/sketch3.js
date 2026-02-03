@@ -4,12 +4,12 @@ registerSketch('sk3', function (p) {
 
   p.setup = function () {
     p.createCanvas(p.windowWidth, p.windowHeight);
-    p.background(255);
-    cx = p.width / 2;
+    p.background("white");
+    cx = p.width / 2; // da math for circle stuff
     cy = p.height / 2;
     r = 220;
     p.noLoop();
-    p.textAlign(p.CENTER, p.CENTER);
+    p.textAlign(p.CENTER);
     p.textSize(12);
     p.rectMode(p.CENTER);
   };
@@ -97,8 +97,6 @@ registerSketch('sk3', function (p) {
 
   // add tasks/activities
   p.draw = function () {
-    p.background(255);
-
     drawTicks();
 
     slice(23, 24, "sleep", "pink");
@@ -114,5 +112,9 @@ registerSketch('sk3', function (p) {
     slice(22, 23, "get ready for bed", "lightgrey");
 
     drawClockHand();
+  };
+
+  p.windowResized = function () {
+    p.resizeCanvas(p.windowWidth, p.windowHeight);
   };
 });

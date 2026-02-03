@@ -11,8 +11,10 @@ registerSketch('sk4', function (p) {
 
   p.setup = function () {
     p.createCanvas(p.windowWidth, p.windowHeight);
-    p.textAlign(p.CENTER, p.CENTER);
+    p.background("white");
+    p.textAlign(p.CENTER);
     p.textSize(32);
+    p.rectMode(p.CENTER);
 
     // user imput fields
     minutesInput = p.createInput('');
@@ -117,7 +119,7 @@ registerSketch('sk4', function (p) {
   }
 
   p.draw = function () {
-    p.background(240);
+    p.background("white");
 
     // Update if running
     if (running && remainingSeconds > 0) {
@@ -153,7 +155,7 @@ registerSketch('sk4', function (p) {
     p.text(timeStr, p.width / 2, p.height / 2);
   };
 
-    p.windowResized = function () {
-      p.resizeCanvas(p.windowWidth, p.windowHeight);
-    };
+  p.windowResized = function () {
+    p.resizeCanvas(p.windowWidth, p.windowHeight);
+  };
 });
