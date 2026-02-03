@@ -10,7 +10,7 @@ registerSketch('sk4', function (p) {
   let exploded = false;
 
   p.setup = function () {
-    p.createCanvas(400, 400);
+    p.createCanvas(p.windowWidth, p.windowHeight);
     p.textAlign(p.CENTER, p.CENTER);
     p.textSize(32);
 
@@ -70,7 +70,7 @@ registerSketch('sk4', function (p) {
 
     // bomb body
     p.noStroke();
-    p.fill(60); // dark grey
+    p.fill("dimgray");
     p.circle(0, 0, size);
 
     // cap thing
@@ -152,12 +152,12 @@ registerSketch('sk4', function (p) {
     let displayMins = Math.floor(remainingSeconds / 60);
     let displaySecs = remainingSeconds % 60;
     let timeStr = p.nf(displayMins, 2) + ':' + p.nf(displaySecs, 2);
-    p.fill(255);
+    p.fill("white");
     p.textSize(32);
     p.text(timeStr, p.width / 2, p.height / 2);
   };
 
-  p.windowResized = function () {
-    p.resizeCanvas(p.windowWidth, p.windowHeight);
-  };
+    p.windowResized = function () {
+      p.resizeCanvas(p.windowWidth, p.windowHeight);
+    };
 });

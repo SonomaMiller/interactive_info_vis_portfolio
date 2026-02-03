@@ -3,7 +3,7 @@ registerSketch('sk3', function (p) {
   let cx, cy, r;
 
   p.setup = function () {
-    p.createCanvas(600, 600);
+    p.createCanvas(p.windowWidth, p.windowHeight);
     p.background(255);
     cx = p.width / 2;
     cy = p.height / 2;
