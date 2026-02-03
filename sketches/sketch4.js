@@ -1,5 +1,5 @@
 // Instance-mode sketch for tab 4: bomb timer
-registerSketch('bombtimer', function (p) {
+registerSketch('sk4', function (p) {
   p.setup = function () {
     p.createCanvas(p.windowWidth, p.windowHeight);
   };
