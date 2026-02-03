@@ -3,7 +3,7 @@ registerSketch('sk2', function (p) {
   // const spiralclock = (p) => {
   let angle = 0; // starting angle
   let radius = 0; // radius of the circle motion
-  let radiusUp = 0.05; //increase the radius
+  let pixelsPerRotation = 10; //increase the radius
   let totalFrames = 0; // Tracks active duration
 
   let previousX; // declared previous x position variable
@@ -23,10 +23,11 @@ registerSketch('sk2', function (p) {
     let y = p.height / 2 + p.sin(angle) * radius;
 
     // increase the angle to create motion; 1 rotation every 60 seconds
-    angle += (p.TWO_PI / 60) * (p.deltaTime / 1000);
+    let dAngle = (p.TWO_PI / 10) * (p.deltaTime / 1000); // 1 rotation per 10s
+    angle += dAngle;
 
     // increase the radius to make it grow as spiral
-    radius += radiusUp;
+    radius += pixelsPerRotation * (dAngle / p.TWO_PI);
 
     // update total frames
     totalFrames++;
