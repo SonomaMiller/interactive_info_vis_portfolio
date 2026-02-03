@@ -1,6 +1,5 @@
 // Instance-mode sketch for tab 4: bomb timer
 registerSketch('sk4', function (p) {
-
   let minutesInput, secondsInput;
   let startButton, pauseButton, restartButton;
 
@@ -78,10 +77,23 @@ registerSketch('sk4', function (p) {
     p.rect(0, -size / 2 - capHeight / 2, capWidth, capHeight, 4);
 
     // Wick
-    p.fill("tan");
+    let wickFullHeight = size * 0.25;
     let wickWidth = size * 0.05;
-    let wickHeight = size * 0.25;
-    p.rect(0, -size / 2 - capHeight - wickHeight / 2, wickWidth, wickHeight);
+    let fraction = totalSeconds > 0 ? remainingSeconds / totalSeconds : 0; // 1 → 0
+    let wickHeight = wickFullHeight * fraction;
+    let wickTopY = -size / 2 - capHeight - wickHeight / 2;
+
+    p.fill("tan");
+
+    p.rect(0, wickTopY, wickWidth, wickHeight);
+
+    // fuse on wick
+    if (remainingSeconds > 0) {
+      let dotY = wickTopY - wickHeight / 2;
+      p.fill('red');
+      p.noStroke();
+      p.circle(0, dotY, wickWidth);
+    }
 
     p.pop();
   }
