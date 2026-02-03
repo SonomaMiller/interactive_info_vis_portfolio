@@ -73,6 +73,26 @@ registerSketch('sk3', function (p) {
     p.pop();
   }
 
+  function drawClockHand() {
+    let now = new Date();
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+
+    // time to angle (360/24 = 15 degrees per hour)
+    let angle = p.radians(hours * 15 + minutes * 0.25 - 90);
+
+    // hand length
+    let handLength = r * 0.9;
+    let hx = cx + p.cos(angle) * handLength;
+    let hy = cy + p.sin(angle) * handLength;
+
+    p.push();
+    p.stroke('black');
+    p.strokeWeight(3);
+    p.line(cx, cy, hx, hy);
+    p.pop();
+  }
+
   // add tasks/activities
   p.draw = function () {
     p.background(255);
@@ -90,5 +110,7 @@ registerSketch('sk3', function (p) {
     slice(18, 19.5, "dinner", "dodgerblue");
     slice(19.5, 22, "movie night", "mediumpurple");
     slice(22, 23, "get ready for bed", "lightgrey");
+
+    drawClockHand();
   };
 });
