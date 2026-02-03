@@ -3,17 +3,17 @@ registerSketch('sk2', function (p) {
   // const spiralclock = (p) => {
   let angle = 0; // starting angle
   let radius = 0; // radius of the circle motion
-  let spd = 0.005; // speed of the motion
   let radiusUp = 0.05; //increase the radius
+  let totalFrames = 0; // Tracks active duration
 
   let previousX; // declared previous x position variable
   let previousY; // declared previous y position variable
 
   p.setup = function () {
-    const container = document.getElementById('sketch-container-sk2');
-    const canvas = p.createCanvas(p.windowWidth, p.windowHeight);
-    canvas.parent(container);
+    p.createCanvas(p.windowWidth, p.windowHeight);
     p.background(255);
+    p.textAlign(p.CENTER);
+    p.textSize(24);
     p.rectMode(p.CENTER);
   };
 
@@ -22,11 +22,14 @@ registerSketch('sk2', function (p) {
     let x = p.width / 2 + p.cos(angle) * radius;
     let y = p.height / 2 + p.sin(angle) * radius;
 
-    // increase the angle to create motion
-    angle += spd;
+    // increase the angle to create motion; 1 rotation every 60 seconds
+    angle += (p.TWO_PI / 60) * (p.deltaTime / 1000);
 
     // increase the radius to make it grow as spiral
     radius += radiusUp;
+
+    // update total frames
+    totalFrames++;
 
     // draw the circle
     p.stroke(0);
@@ -38,11 +41,29 @@ registerSketch('sk2', function (p) {
     // save current position as previous position
     previousX = x;
     previousY = y;
+
+    // calculate minutes and seconds based on 60fps
+    let totalSeconds = p.floor(totalFrames / 60);
+    let minutes = p.floor(totalSeconds / 60);
+    let seconds = totalSeconds % 60;
+
+    // format string to add leading zero to seconds (e.g., 01:05)
+    let timeString = minutes + ":" + p.nf(seconds, 2);
+
+    p.push();
+    // draw a small white rectangle behind text to keep it readable
+    // erase numbers right before drawing new ones
+    p.noStroke();
+    p.fill(255);
+    p.rectMode(p.CENTER);
+    p.rect(p.width / 2, p.height - 50, 150, 50);
+
+    p.fill(0);
+    p.text(timeString, p.width / 2, p.height - 50);
+    p.pop();
   };
 
   p.windowResized = function () {
     p.resizeCanvas(p.windowWidth, p.windowHeight);
   };
 });
-
-// let myp5 = new p5(spiralclock, 'sk2');
