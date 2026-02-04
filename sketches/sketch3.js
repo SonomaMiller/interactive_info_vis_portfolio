@@ -20,7 +20,7 @@ registerSketch('sk3', function (p) {
   function slice(startHour, endHour, label, col) {
     let start = hourToAngle(startHour);
     let end = hourToAngle(endHour);
-    let now = getNowInHours();
+    let now = new Date().getHours();
     let c = p.color(col);
 
     // if activity is fully in the past lower opacity
@@ -58,37 +58,37 @@ registerSketch('sk3', function (p) {
   function drawTicks() {
     p.push();
     p.stroke(0);
-    p.strokeWeight(1);
+
+    let now = new Date();
+    let nowHour = now.getHours() === 0 ? 24 : now.getHours();
+
     for (let h = 0; h < 24; h++) {
+      p.push();
+
       let angle = hourToAngle(h);
+      let displayHour = h === 0 ? 24 : h;
 
-      let nowHour = getNowInHours()
+      // bold only current hour
+      p.strokeWeight(displayHour === nowHour ? 3 : 1);
 
-      // bold current hour
-      if (h <= nowHour && nowHour < h + 1) {
-        p.strokeWeight(3);
-      } else {
-        p.strokeWeight(1);
-      }
-
-      let innerR = r; // start of tick
-      let outerR = r + 10; // end of tikc
+      let innerR = r;
+      let outerR = r + 10;
 
       let x1 = cx + p.cos(angle) * innerR;
       let y1 = cy + p.sin(angle) * innerR;
       let x2 = cx + p.cos(angle) * outerR;
       let y2 = cy + p.sin(angle) * outerR;
+
       p.line(x1, y1, x2, y2);
 
-      // hour labels
-      let lx = cx + p.cos(angle) * (outerR + 10);
-      let ly = cy + p.sin(angle) * (outerR + 10);
-      p.push();
-      p.translate(lx, ly);
+      // hour label
+      let lx = cx + p.cos(angle) * (outerR + 14);
+      let ly = cy + p.sin(angle) * (outerR + 14);
 
       p.noStroke();
       p.fill(0);
-      p.text(h, 0, 0);
+      p.textAlign(p.CENTER, p.CENTER);
+      p.text(displayHour, lx, ly);
       p.pop();
     }
     p.pop();
@@ -112,11 +112,6 @@ registerSketch('sk3', function (p) {
     p.strokeWeight(3);
     p.line(cx, cy, hx, hy);
     p.pop();
-  }
-
-  function getNowInHours() {
-    let now = new Date();
-    return now.getHours() + now.getMinutes() / 60;
   }
 
   // add tasks/activities
