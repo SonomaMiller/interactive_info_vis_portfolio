@@ -30,7 +30,7 @@ registerSketch('sk3', function (p) {
     } else {
       sliceEnded = now >= endHour && now < startHour;
     }
-    let c = sliceEnded ? p.color('lightgrey') : p.color(col);
+    let c = sliceEnded ? p.color('#F0F0F0') : p.color(col);
 
     p.fill(c);
     p.stroke(255);
