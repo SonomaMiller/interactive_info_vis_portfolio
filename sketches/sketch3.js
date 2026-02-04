@@ -76,8 +76,15 @@ registerSketch('sk3', function (p) {
       let angle = hourToAngle(h);
       let displayHour = h === 0 ? 24 : h;
 
-      // bold only current hour
+      // bold only current hour tick
       p.strokeWeight(displayHour === nowHour ? 3 : 1);
+      // bold current hour number
+      if (displayHour === nowHour) {
+        p.textStyle(p.BOLD);
+      } else {
+        p.textStyle(p.NORMAL);
+      }
+
 
       let innerR = r;
       let outerR = r + 10;
@@ -124,6 +131,7 @@ registerSketch('sk3', function (p) {
 
   // add tasks/activities
   p.draw = function () {
+    p.background("white");
     drawTicks();
 
     slice(23, 24, "sleep", "pink");
