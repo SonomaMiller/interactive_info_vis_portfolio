@@ -138,9 +138,9 @@ registerSketch('sk3', function (p) {
     slice(13, 14.5, "class", "orange");
     slice(14.5, 15.5, "workout", "crimson");
     slice(15.5, 18, "study", "mediumpurple");
-    slice(18, 19.5, "dinner", "lightgreen");
-    slice(19.5, 22, "movie night", "dodgerblue");
-    slice(22, 23, "bedtime", "lightgrey");
+    slice(18, 19.5, "dinner", "green");
+    slice(19.5, 22, "movie night", "lightgreen");
+    slice(22, 23, "bedtime", "purple");
 
     drawClockHand();
   };
