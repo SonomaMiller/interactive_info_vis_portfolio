@@ -33,7 +33,7 @@ registerSketch('sk3', function (p) {
       sliceEnded = now >= endHour && now < startHour;
     }
     if (sliceEnded) {
-      c.setAlpha(128);
+      c.setAlpha(100);
     }
 
     p.fill(c);
