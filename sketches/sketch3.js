@@ -8,7 +8,6 @@ registerSketch('sk3', function (p) {
     cx = p.width / 2; // da math for circle stuff
     cy = p.height / 2;
     r = 220;
-    p.noLoop();
     p.textAlign(p.CENTER);
     p.textSize(12);
     p.rectMode(p.CENTER);
@@ -21,8 +20,15 @@ registerSketch('sk3', function (p) {
   function slice(startHour, endHour, label, col) {
     let start = hourToAngle(startHour);
     let end = hourToAngle(endHour);
+    let now = getNowInHours();
+    let c = p.color(col);
 
-    p.fill(col);
+    // if activity is fully in the past lower opacity
+    if (endHour <= now) {
+      c.setAlpha(128);
+    }
+
+    p.fill(c);
     p.stroke(255);
     p.strokeWeight(2);
     p.arc(cx, cy, r * 2, r * 2, start, end, p.PIE);
@@ -36,8 +42,10 @@ registerSketch('sk3', function (p) {
     p.translate(lx, ly);
 
     // rotate text to align with slice
-    let angle;
-    angle = mid + p.PI;
+    let angle = mid;
+    if (angle > p.HALF_PI && angle < 1.5 * p.PI) {
+      angle += p.PI;
+    }
     p.rotate(angle);
 
     p.fill(0);
@@ -53,8 +61,19 @@ registerSketch('sk3', function (p) {
     p.strokeWeight(1);
     for (let h = 0; h < 24; h++) {
       let angle = hourToAngle(h);
+
+      let nowHour = getNowInHours()
+
+      // bold current hour
+      if (h <= nowHour && nowHour < h + 1) {
+        p.strokeWeight(3);
+      } else {
+        p.strokeWeight(1);
+      }
+
       let innerR = r; // start of tick
       let outerR = r + 10; // end of tikc
+
       let x1 = cx + p.cos(angle) * innerR;
       let y1 = cy + p.sin(angle) * innerR;
       let x2 = cx + p.cos(angle) * outerR;
@@ -95,6 +114,11 @@ registerSketch('sk3', function (p) {
     p.pop();
   }
 
+  function getNowInHours() {
+    let now = new Date();
+    return now.getHours() + now.getMinutes() / 60;
+  }
+
   // add tasks/activities
   p.draw = function () {
     drawTicks();
@@ -116,5 +140,7 @@ registerSketch('sk3', function (p) {
 
   p.windowResized = function () {
     p.resizeCanvas(p.windowWidth, p.windowHeight);
+    p.background("white");
+    p.redraw();
   };
 });
