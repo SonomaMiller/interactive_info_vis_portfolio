@@ -130,16 +130,16 @@ registerSketch('sk3', function (p) {
     p.background("white");
     drawTicks();
 
-    slice(23, 24, "sleep", "pink");
-    slice(0, 8, "sleep", "pink");
-    slice(8, 9, "breakfast", "crimson");
+    slice(23, 24, "sleep", "lightblue");
+    slice(0, 8, "sleep", "lightblue");
+    slice(8, 9, "breakfast", "pink");
     slice(9, 12, "class", "orange");
     slice(12, 13, "lunch", "gold");
-    slice(13, 14.5, "class", "lightgreen");
-    slice(14.5, 15.5, "workout", "green");
-    slice(15.5, 18, "study", "lightblue");
-    slice(18, 19.5, "dinner", "dodgerblue");
-    slice(19.5, 22, "movie night", "mediumpurple");
+    slice(13, 14.5, "class", "orange");
+    slice(14.5, 15.5, "workout", "crimson");
+    slice(15.5, 18, "study", "mediumpurple");
+    slice(18, 19.5, "dinner", "lightgreen");
+    slice(19.5, 22, "movie night", "dodgerblue");
     slice(22, 23, "bedtime", "lightgrey");
 
     drawClockHand();
