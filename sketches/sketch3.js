@@ -9,7 +9,7 @@ registerSketch('sk3', function (p) {
     cy = p.height / 2;
     r = 220;
     p.textAlign(p.CENTER);
-    p.textSize(12);
+    p.textSize(13);
     p.rectMode(p.CENTER);
   };
 
@@ -20,11 +20,19 @@ registerSketch('sk3', function (p) {
   function slice(startHour, endHour, label, col) {
     let start = hourToAngle(startHour);
     let end = hourToAngle(endHour);
-    let now = new Date().getHours();
+    let nowDate = new Date();
+    let now = nowDate.getHours() + nowDate.getMinutes() / 60;
+    let sliceEnded;
     let c = p.color(col);
 
     // if activity is fully in the past lower opacity
-    if (endHour <= now) {
+    if (startHour < endHour) {
+      sliceEnded = now >= endHour;
+    }
+    else {
+      sliceEnded = now >= endHour && now < startHour;
+    }
+    if (sliceEnded) {
       c.setAlpha(128);
     }
 
@@ -33,7 +41,7 @@ registerSketch('sk3', function (p) {
     p.strokeWeight(2);
     p.arc(cx, cy, r * 2, r * 2, start, end, p.PIE);
 
-    // label position (mid-angle)
+    // label position
     let mid = (start + end) / 2;
     let lx = cx + p.cos(mid) * r * 0.6;
     let ly = cy + p.sin(mid) * r * 0.6;
@@ -128,7 +136,7 @@ registerSketch('sk3', function (p) {
     slice(15.5, 18, "study", "lightblue");
     slice(18, 19.5, "dinner", "dodgerblue");
     slice(19.5, 22, "movie night", "mediumpurple");
-    slice(22, 23, "get ready for bed", "lightgrey");
+    slice(22, 23, "bedtime", "lightgrey");
 
     drawClockHand();
   };
