@@ -23,18 +23,14 @@ registerSketch('sk3', function (p) {
     let nowDate = new Date();
     let now = nowDate.getHours() + nowDate.getMinutes() / 60;
     let sliceEnded;
-    let c = p.color(col);
 
-    // if activity is fully in the past lower opacity
+    // if activity is fully in the past grey out
     if (startHour < endHour) {
       sliceEnded = now >= endHour;
-    }
-    else {
+    } else {
       sliceEnded = now >= endHour && now < startHour;
     }
-    if (sliceEnded) {
-      c.setAlpha(100);
-    }
+    let c = sliceEnded ? p.color('lightgrey') : p.color(col);
 
     p.fill(c);
     p.stroke(255);
