@@ -140,7 +140,7 @@ registerSketch('sk3', function (p) {
     slice(15.5, 18, "study", "mediumpurple");
     slice(18, 19.5, "dinner", "green");
     slice(19.5, 22, "movie night", "lightgreen");
-    slice(22, 23, "bedtime", "lightpink");
+    slice(22, 23, "bedtime", "pink");
 
     drawClockHand();
   };
