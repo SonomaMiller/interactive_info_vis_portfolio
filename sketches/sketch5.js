@@ -2,7 +2,8 @@
 registerSketch('sk5', function (p) {
   let table;
   let isPickupMode = true;
-  let chartData = [];
+  let bestData = [];
+  let worstData = [];
 
   p.preload = () => {
     table = p.loadTable("ncr_ride_bookings.csv", "csv", "header");
@@ -10,7 +11,6 @@ registerSketch('sk5', function (p) {
 
   p.setup = () => {
     p.createCanvas(p.windowWidth, p.windowHeight);
-    p.rectMode(p.CENTER);
     processRideData();
     p.noLoop();
   };
@@ -27,7 +27,6 @@ registerSketch('sk5', function (p) {
       let custCancel = rows[i].getString(10) === "1" ? 1 : 0;
       let drivCancel = rows[i].getString(12) === "1" ? 1 : 0;
 
-      // error handling
       if (!stats[loc]) {
         stats[loc] = { cancelled: 0, total: 0 };
       }
@@ -46,16 +45,17 @@ registerSketch('sk5', function (p) {
       });
     }
 
+    // Sort from highest to lowest
     allLocations.sort((a, b) => b.ratio - a.ratio);
 
-    // Get the 5 lowest (Blue) and 5 highest (Red)
-    let lowest = allLocations.slice(0, 5);
-    let highest = allLocations.slice(-5);
-    chartData = lowest.concat(highest);
+    worstData = allLocations.slice(0, 5);
+    bestData = allLocations.slice(-5);
+    bestData.reverse();
   }
 
   p.draw = () => {
     p.background("white");
+    p.rectMode(p.CORNER);
 
     // draw toggle switch
     p.noStroke();
@@ -85,9 +85,9 @@ registerSketch('sk5', function (p) {
     p.textAlign(p.CENTER, p.CENTER);
     p.fill('gray');
     p.textSize(15);
-    p.text('According to Proportion of Cancelled Rides', p.width / 2, 70);
+    p.text('According to Proportion of Cancelled Rides', p.width / 2, 75);
 
-    if (chartData.length === 0) {
+    if (bestData.length === 0 || worstData.length === 0) {
       p.text("Processing data...", p.width / 2, p.height / 2);
       return;
     }
@@ -96,50 +96,68 @@ registerSketch('sk5', function (p) {
     const barHeight = 40;
     const spacing = 30;
     const maxBarWidth = 250;
-    let maxRatio = p.max(chartData.map(d => d.ratio)) || 1;
 
-    for (let i = 0; i < chartData.length; i++) {
-      let y = 120 + i * (barHeight + spacing);
-      let w = p.map(chartData[i].ratio, 0, maxRatio, 5, maxBarWidth);
-      let percentageText = p.nf(chartData[i].ratio * 100, 1, 1) + "%";
+    // Auto-scale bar width
+    let maxRatio = p.max([...worstData, ...bestData].map(d => d.ratio)) || 0.1;
 
-      // Left bars blue, right bars red
-      if (i < 5) {
+    for (let i = 0; i < 5; i++) {
+      let y = 140 + i * (barHeight + spacing);
+
+      // left blue bars
+      if (bestData[i]) {
+        let wLeft = p.map(bestData[i].ratio, 0, maxRatio, 5, maxBarWidth);
+        let percLeft = p.nf(bestData[i].ratio * 100, 1, 1) + "%";
+
         p.fill("skyblue");
         p.noStroke();
-        // Draw to the left of the axis
-        p.rect(centerX - w, y, w, barHeight);
+        p.rect(centerX - wLeft, y, wLeft, barHeight);
 
         // name of location outside bar
         p.textAlign(p.RIGHT, p.CENTER);
         p.fill('black');
         p.textSize(11);
-        p.text(chartData[i].name, centerX - w - 10, y + barHeight / 2);
+        p.text(bestData[i].name, centerX - wLeft - 10, y + barHeight / 2);
 
         // percentage inside bar
         p.textAlign(p.LEFT, p.CENTER);
         p.fill('white');
-        p.text(percentageText, centerX - w + 5, y + barHeight / 2);
-      } else {
+        p.text(percLeft, centerX - wLeft + 5, y + barHeight / 2);
+      }
+
+      // right red bars
+      if (worstData[i]) {
+        let wRight = p.map(worstData[i].ratio, 0, maxRatio, 5, maxBarWidth);
+        let percRight = p.nf(worstData[i].ratio * 100, 1, 1) + "%";
+
         p.fill("crimson");
-        p.rect(centerX, y, w, barHeight);
+        p.noStroke();
+        p.rect(centerX, y, wRight, barHeight);
 
         // name outside bar
         p.textAlign(p.LEFT, p.CENTER);
         p.fill('black');
         p.textSize(11);
-        p.text(chartData[i].name, centerX + w + 10, y + barHeight / 2);
+        p.text(worstData[i].name, centerX + wRight + 10, y + barHeight / 2);
 
         // percentage inside bar
         p.textAlign(p.RIGHT, p.CENTER);
         p.fill('white');
-        p.text(percentageText, centerX + w - 5, y + barHeight / 2);
+        p.text(percRight, centerX + wRight - 5, y + barHeight / 2);
       }
     }
 
     // Center Vertical Axis
     p.stroke(150);
     p.strokeWeight(2);
-    p.line(centerX, 100, centerX, 795);
+    p.line(centerX, 120, centerX, 500);
+  };
+
+  // handle tab switching/toggle clicks
+  p.mousePressed = () => {
+    if (p.mouseX > 20 && p.mouseX < 130 && p.mouseY > 20 && p.mouseY < 50) {
+      isPickupMode = !isPickupMode;
+      processRideData();
+      p.redraw();
+    }
   };
 });
