@@ -92,13 +92,14 @@ registerSketch('sk5', function (p) {
     const centerX = p.width / 2;
     const barHeight = 40;
     const spacing = 30;
-    const maxBarWidth = 250; // Max pixels for a 100% ratio
+    const maxBarWidth = 250;
+    let maxRatio = p.max(chartData.map(d => d.ratio)) || 1;
 
     for (let i = 0; i < chartData.length; i++) {
+      let w = p.map(chartData[i].ratio, 10, maxRatio, 10, maxBarWidth);
       let y = 120 + i * (barHeight + spacing);
 
       // if proportion is 0, draw a line so it's visible
-      let w = p.max(chartData[i].ratio * maxBarWidth, 2);
       let percentageText = p.nf(chartData[i].ratio * 100, 1, 1) + "%";
 
       // Left bars blue, right bars red
