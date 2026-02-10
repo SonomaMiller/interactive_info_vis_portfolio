@@ -99,7 +99,7 @@ registerSketch('sk5', function (p) {
 
       // Left bars blue, right bars red
       if (i < 5) {
-        p.fill("blue");
+        p.fill("skyblue");
         p.noStroke();
         // Draw to the left of the axis
         p.rect(centerX - w, y, w, barHeight);
@@ -115,7 +115,7 @@ registerSketch('sk5', function (p) {
         p.fill(255);
         p.text(percentageText, centerX - w + 5, y + barHeight / 2);
       } else {
-        p.fill("red");
+        p.fill("crimson");
         p.rect(centerX, y, w, barHeight);
 
         // name outside bar
