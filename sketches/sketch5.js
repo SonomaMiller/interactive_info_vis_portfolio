@@ -1,14 +1,15 @@
 // Homework 5: Uber destination bar chart
 registerSketch('sk5', function (p) {
   let table;
+  let isPickupMode = true;
   let chartData = [];
 
   p.preload = () => {
-    table = p.loadTable("../test.csv", "csv", "header");
+    table = p.loadTable("test.csv", "csv", "header");
   };
 
   p.setup = () => {
-    p.createCanvas(700, 500);
+    p.createCanvas(700, 550);
     processRideData();
     p.noLoop();
   };
@@ -16,6 +17,8 @@ registerSketch('sk5', function (p) {
   function processRideData() {
     let stats = {};
     let rows = table.getRows();
+    chartData = []; // Clear previous data
+    let colIndex = isPickupMode ? 6 : 7;
 
     for (let i = 0; i < rows.length; i++) {
       // pick up location
@@ -54,9 +57,28 @@ registerSketch('sk5', function (p) {
   }
 
   p.draw = () => {
-    p.background(250);
+    p.background("white");
 
-    // Title
+    // draw toggle switch
+    p.noStroke();
+    p.fill("lightgray");
+    p.rect(20, 20, 110, 30, 15);
+
+    // Sliding Knob
+    p.fill(isPickupMode ? p.color(50, 100, 250) : p.color(250, 50, 50));
+    let knobX = isPickupMode ? 22 : 82;
+    p.rect(knobX, 22, 56, 26, 13);
+
+    // switch text
+    p.fill(255);
+    p.textSize(10);
+    p.textAlign(p.CENTER, p.CENTER);
+    p.text(isPickupMode ? "Pickup" : "Drop", knobX + 28, 35);
+
+    p.fill(100);
+    p.textAlign(p.LEFT);
+    p.text(isPickupMode ? "Drop" : "Pickup", isPickupMode ? 90 : 30, 35);
+
     p.textAlign(p.CENTER, p.CENTER);
     p.fill(50);
     p.textSize(20);
@@ -80,7 +102,7 @@ registerSketch('sk5', function (p) {
 
       // Left bars blue, right bars red
       if (i < 2) {
-        p.fill(50, 100, 250); // Solid Blue
+        p.fill("blue");
         p.noStroke();
         // Draw to the left of the axis
         p.rect(centerX - w, y, w, barHeight);
@@ -91,7 +113,7 @@ registerSketch('sk5', function (p) {
         p.text(chartData[i].name, centerX - w - 10, y + barHeight / 2);
         p.text(p.nf(chartData[i].ratio * 100, 1, 1) + "%", centerX - 5, y + barHeight / 2);
       } else {
-        p.fill(250, 50, 50); // Solid Red
+        p.fill("red");
         p.noStroke();
         // Draw to the right of the axis
         p.rect(centerX, y, w, barHeight);
