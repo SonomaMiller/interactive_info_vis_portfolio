@@ -98,7 +98,7 @@ registerSketch('sk5', function (p) {
       let percentageText = p.nf(chartData[i].ratio * 100, 1, 1) + "%";
 
       // Left bars blue, right bars red
-      if (i < 2) {
+      if (i < 5) {
         p.fill("blue");
         p.noStroke();
         // Draw to the left of the axis
