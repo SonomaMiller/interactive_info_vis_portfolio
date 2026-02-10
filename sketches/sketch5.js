@@ -70,11 +70,11 @@ registerSketch('sk5', function (p) {
     p.fill(255);
     p.textSize(10);
     p.textAlign(p.CENTER, p.CENTER);
-    p.text(isPickupMode ? "Pickup" : "Drop", knobX + 28, 35);
+    p.text(isPickupMode ? "Pickup" : "Dropoff", knobX + 28, 35);
 
     p.fill(100);
     p.textAlign(p.LEFT);
-    p.text(isPickupMode ? "Drop" : "Pickup", isPickupMode ? 90 : 30, 35);
+    p.text(isPickupMode ? "Dropoff" : "Pickup", isPickupMode ? 90 : 30, 35);
 
     p.textAlign(p.CENTER, p.CENTER);
     p.fill(50);
