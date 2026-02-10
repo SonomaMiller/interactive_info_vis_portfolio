@@ -5,7 +5,7 @@ registerSketch('sk5', function (p) {
   let chartData = [];
 
   p.preload = () => {
-    table = p.loadTable("test.csv", "csv", "header");
+    table = p.loadTable("ncr_ride_bookings.csv", "csv", "header");
   };
 
   p.setup = () => {
