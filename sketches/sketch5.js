@@ -45,7 +45,7 @@ registerSketch('sk5', function (p) {
       });
     }
 
-    allLocations.sort((a, b) => a.ratio - b.ratio);
+    allLocations.sort((a, b) => b.ratio - a.ratio);
 
     // Get the 5 lowest (Blue) and 5 highest (Red)
     let lowest = allLocations.slice(0, 5);
