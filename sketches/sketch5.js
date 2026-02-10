@@ -23,7 +23,7 @@ registerSketch('sk5', function (p) {
 
     p.fill(0);
     p.textSize(20);
-    p.text('title', p.width / 2, 30);
+    p.text('Uber Destinations by Proportion of Canceled Rides', p.width / 2, 30);
 
     if (!table) return;
 
