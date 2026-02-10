@@ -9,7 +9,7 @@ registerSketch('sk5', function (p) {
   };
 
   p.setup = () => {
-    p.createCanvas(700, 550);
+    p.createCanvas(800, 800);
     processRideData();
     p.noLoop();
   };
@@ -17,19 +17,16 @@ registerSketch('sk5', function (p) {
   function processRideData() {
     let stats = {};
     let rows = table.getRows();
-    chartData = []; // Clear previous data
+    let allLocations = [];
+
     let colIndex = isPickupMode ? 6 : 7;
 
     for (let i = 0; i < rows.length; i++) {
-      // pick up location
-      let loc = rows[i].getString(6);
-
-      //if null or empty, ignored
+      let loc = rows[i].getString(colIndex);
       let custCancel = rows[i].getString(10) === "1" ? 1 : 0;
       let drivCancel = rows[i].getString(12) === "1" ? 1 : 0;
 
-      if (!loc || loc === "null") continue; // this is just error handling
-
+      // error handling
       if (!stats[loc]) {
         stats[loc] = { cancelled: 0, total: 0 };
       }
@@ -40,20 +37,20 @@ registerSketch('sk5', function (p) {
       }
     }
 
-    // convert stats object to an array for sorting
     for (let loc in stats) {
       let proportion = stats[loc].cancelled / stats[loc].total;
-      chartData.push({
+      allLocations.push({
         name: loc,
         ratio: proportion
       });
     }
 
-    // Sort lowest proportion of cancels (left) to highest
-    chartData.sort((a, b) => a.ratio - b.ratio);
+    allLocations.sort((a, b) => a.ratio - b.ratio);
 
-    // get 5 locations with highest proportions
-    chartData = chartData.slice(-5);
+    // Get the 5 lowest (Blue) and 5 highest (Red)
+    let lowest = allLocations.slice(0, 5);
+    let highest = allLocations.slice(-5);
+    chartData = lowest.concat(highest);
   }
 
   p.draw = () => {
@@ -85,7 +82,7 @@ registerSketch('sk5', function (p) {
     p.text('Uber Destinations by Proportion of Canceled Rides', p.width / 2, 50);
 
     if (chartData.length === 0) {
-      p.text("Processing data...", p.width/2, p.height/2);
+      p.text("Processing data...", p.width / 2, p.height / 2);
       return;
     }
 
@@ -96,10 +93,8 @@ registerSketch('sk5', function (p) {
     let maxRatio = p.max(chartData.map(d => d.ratio)) || 1;
 
     for (let i = 0; i < chartData.length; i++) {
-      let w = p.map(chartData[i].ratio, 10, maxRatio, 10, maxBarWidth);
       let y = 120 + i * (barHeight + spacing);
-
-      // if proportion is 0, draw a line so it's visible
+      let w = p.map(chartData[i].ratio, 0, maxRatio, 5, maxBarWidth);
       let percentageText = p.nf(chartData[i].ratio * 100, 1, 1) + "%";
 
       // Left bars blue, right bars red
@@ -132,12 +127,13 @@ registerSketch('sk5', function (p) {
         // percentage inside bar
         p.textAlign(p.RIGHT, p.CENTER);
         p.fill(255);
-        p.text(percentageText, centerX + w - 5, y + barHeight / 2);      }
+        p.text(percentageText, centerX + w - 5, y + barHeight / 2);
+      }
     }
 
     // Center Vertical Axis
     p.stroke(150);
     p.strokeWeight(2);
-    p.line(centerX, 100, centerX, 450);
+    p.line(centerX, 100, centerX, 795);
   };
 });
