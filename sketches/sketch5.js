@@ -99,6 +99,7 @@ registerSketch('sk5', function (p) {
 
       // if proportion is 0, draw a line so it's visible
       let w = p.max(chartData[i].ratio * maxBarWidth, 2);
+      let percentageText = p.nf(chartData[i].ratio * 100, 1, 1) + "%";
 
       // Left bars blue, right bars red
       if (i < 2) {
@@ -107,23 +108,30 @@ registerSketch('sk5', function (p) {
         // Draw to the left of the axis
         p.rect(centerX - w, y, w, barHeight);
 
-        // Labels on the left
+        // name of location outside bar
         p.textAlign(p.RIGHT, p.CENTER);
         p.fill(0);
+        p.textSize(11);
         p.text(chartData[i].name, centerX - w - 10, y + barHeight / 2);
-        p.text(p.nf(chartData[i].ratio * 100, 1, 1) + "%", centerX - 5, y + barHeight / 2);
+
+        // percentage inside bar
+        p.textAlign(p.LEFT, p.CENTER);
+        p.fill(255);
+        p.text(percentageText, centerX - w + 5, y + barHeight / 2);
       } else {
         p.fill("red");
-        p.noStroke();
-        // Draw to the right of the axis
         p.rect(centerX, y, w, barHeight);
 
-        // Labels on the right
+        // name outside bar
         p.textAlign(p.LEFT, p.CENTER);
         p.fill(0);
+        p.textSize(11);
         p.text(chartData[i].name, centerX + w + 10, y + barHeight / 2);
-        p.text(p.nf(chartData[i].ratio * 100, 1, 1) + "%", centerX + 5, y + barHeight / 2);
-      }
+
+        // percentage inside bar
+        p.textAlign(p.RIGHT, p.CENTER);
+        p.fill(255);
+        p.text(percentageText, centerX + w - 5, y + barHeight / 2);      }
     }
 
     // Center Vertical Axis
