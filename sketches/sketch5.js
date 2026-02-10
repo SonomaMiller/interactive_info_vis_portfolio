@@ -9,7 +9,8 @@ registerSketch('sk5', function (p) {
   };
 
   p.setup = () => {
-    p.createCanvas(800, 800);
+    p.createCanvas(p.windowWidth, p.windowHeight);
+    p.rectMode(p.CENTER);
     processRideData();
     p.noLoop();
   };
@@ -77,9 +78,14 @@ registerSketch('sk5', function (p) {
     p.text(isPickupMode ? "Dropoff" : "Pickup", isPickupMode ? 90 : 30, 35);
 
     p.textAlign(p.CENTER, p.CENTER);
-    p.fill(50);
+    p.fill('black');
     p.textSize(20);
-    p.text('Uber Destinations by Proportion of Canceled Rides', p.width / 2, 50);
+    p.text('Best and Worst Uber Destinations', p.width / 2, 50);
+
+    p.textAlign(p.CENTER, p.CENTER);
+    p.fill('gray');
+    p.textSize(15);
+    p.text('According to Proportion of Cancelled Rides', p.width / 2, 70);
 
     if (chartData.length === 0) {
       p.text("Processing data...", p.width / 2, p.height / 2);
@@ -106,13 +112,13 @@ registerSketch('sk5', function (p) {
 
         // name of location outside bar
         p.textAlign(p.RIGHT, p.CENTER);
-        p.fill(0);
+        p.fill('black');
         p.textSize(11);
         p.text(chartData[i].name, centerX - w - 10, y + barHeight / 2);
 
         // percentage inside bar
         p.textAlign(p.LEFT, p.CENTER);
-        p.fill(255);
+        p.fill('white');
         p.text(percentageText, centerX - w + 5, y + barHeight / 2);
       } else {
         p.fill("crimson");
@@ -120,13 +126,13 @@ registerSketch('sk5', function (p) {
 
         // name outside bar
         p.textAlign(p.LEFT, p.CENTER);
-        p.fill(0);
+        p.fill('black');
         p.textSize(11);
         p.text(chartData[i].name, centerX + w + 10, y + barHeight / 2);
 
         // percentage inside bar
         p.textAlign(p.RIGHT, p.CENTER);
-        p.fill(255);
+        p.fill('white');
         p.text(percentageText, centerX + w - 5, y + barHeight / 2);
       }
     }
