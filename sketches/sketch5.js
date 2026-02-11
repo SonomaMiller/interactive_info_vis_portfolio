@@ -103,6 +103,7 @@ registerSketch('sk5', function (p) {
     p.textAlign(p.CENTER, p.CENTER);
     p.fill('gray');
     p.textSize(15);
+    p.textStyle(p.NORMAL);
     p.text('According to Proportion of Cancelled Rides', p.width / 2, 75);
 
     if (bestData.length === 0 || worstData.length === 0) {
@@ -170,7 +171,7 @@ registerSketch('sk5', function (p) {
     p.line(centerX, 120, centerX, 500);
 
     let boxY = 540;
-    let boxW = 400;
+    let boxW = 300;
 
     p.noFill();
     p.stroke('lightgray');
