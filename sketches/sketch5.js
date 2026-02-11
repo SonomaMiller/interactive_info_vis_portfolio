@@ -11,7 +11,7 @@ registerSketch('sk5', function (p) {
   };
 
   p.setup = () => {
-    let canvasHeight = p.max(p.windowHeight, 950);
+    let canvasHeight = p.max(p.windowHeight, 800);
     p.createCanvas(p.windowWidth, canvasHeight);
     processRideData();
     p.noLoop();
