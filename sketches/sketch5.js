@@ -98,16 +98,16 @@ registerSketch('sk5', function (p) {
     p.text(isPickupMode ? "Dropoff" : "Pickup", isPickupMode ? 90 : 30, 35);
 
     p.textAlign(p.CENTER, p.CENTER);
-    p.fill('black');
+    p.fill("black");
     p.textSize(20);
     p.textStyle(p.BOLD);
-    p.text('Best and Worst Uber Destinations in India', p.width / 2, 50);
+    p.text("Best and Worst Uber Destinations in India", p.width / 2, 50);
 
     p.textStyle(p.NORMAL);
     p.textAlign(p.CENTER, p.CENTER);
-    p.fill('gray');
+    p.fill("gray");
     p.textSize(15);
-    p.text('According to Proportion of Cancelled Rides', p.width / 2, 75);
+    p.text("According to Proportion of Cancelled Rides", p.width / 2, 75);
 
     if (bestData.length === 0 || worstData.length === 0) {
       p.text("Processing data...", p.width / 2, p.height / 2);
@@ -137,13 +137,13 @@ registerSketch('sk5', function (p) {
 
         // name of location outside bar
         p.textAlign(p.RIGHT, p.CENTER);
-        p.fill('black');
+        p.fill("black");
         p.textSize(11);
         p.text(bestData[i].name, centerX - wLeft - 10, y + barHeight / 2);
 
         // percentage inside bar
         p.textAlign(p.LEFT, p.CENTER);
-        p.fill('white');
+        p.fill("white");
         p.text(percLeft + " (" + fractionLeft + ")", centerX - wLeft + 5, y + barHeight / 2);
       }
 
@@ -159,13 +159,13 @@ registerSketch('sk5', function (p) {
 
         // name outside bar
         p.textAlign(p.LEFT, p.CENTER);
-        p.fill('black');
+        p.fill("black");
         p.textSize(11);
         p.text(worstData[i].name, centerX + wRight + 10, y + barHeight / 2);
 
         // percentage inside bar
         p.textAlign(p.RIGHT, p.CENTER);
-        p.fill('white');
+        p.fill("white");
         p.text(percRight + " (" + fractionRight + ")", centerX + wRight - 5, y + barHeight / 2);      }
     }
 
@@ -179,12 +179,12 @@ registerSketch('sk5', function (p) {
     let boxW = 300;
 
     p.noFill();
-    p.stroke('lightgray');
+    p.stroke("lightgray");
     p.strokeWeight(1);
     p.rect(centerX - boxW / 2, boxY, boxW, 110, 10);
 
     p.noStroke();
-    p.fill('black');
+    p.fill("black");
     p.textAlign(p.CENTER, p.TOP);
     p.textSize(14);
     p.textStyle(p.BOLD);
@@ -192,7 +192,7 @@ registerSketch('sk5', function (p) {
 
     p.textStyle(p.NORMAL);
     p.textSize(12);
-    p.fill('black');
+    p.fill("black");
     for (let i = 0; i < topReasons.length; i++) {
       p.text(`${i + 1}. ${topReasons[i]}`, centerX, boxY + 45 + (i * 18));
     }
