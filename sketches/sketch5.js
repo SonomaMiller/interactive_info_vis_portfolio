@@ -11,7 +11,8 @@ registerSketch('sk5', function (p) {
   };
 
   p.setup = () => {
-    p.createCanvas(p.windowWidth, p.windowHeight);
+    let canvasHeight = p.max(p.windowHeight, 700);
+    p.createCanvas(p.windowWidth, canvasHeight);
     processRideData();
     p.noLoop();
   };
@@ -100,10 +101,10 @@ registerSketch('sk5', function (p) {
     p.textStyle(p.BOLD);
     p.text('Best and Worst Uber Destinations in India', p.width / 2, 50);
 
+    p.textStyle(p.NORMAL);
     p.textAlign(p.CENTER, p.CENTER);
     p.fill('gray');
     p.textSize(15);
-    p.textStyle(p.NORMAL);
     p.text('According to Proportion of Cancelled Rides', p.width / 2, 75);
 
     if (bestData.length === 0 || worstData.length === 0) {
@@ -170,13 +171,14 @@ registerSketch('sk5', function (p) {
     p.strokeWeight(2);
     p.line(centerX, 120, centerX, 500);
 
+    // top reasons
     let boxY = 540;
     let boxW = 300;
 
     p.noFill();
     p.stroke('lightgray');
     p.strokeWeight(1);
-    p.rect(centerX - boxW / 2, boxY, boxW, 100, 10);
+    p.rect(centerX - boxW / 2, boxY, boxW, 105, 10);
 
     p.noStroke();
     p.fill('black');
