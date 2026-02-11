@@ -128,6 +128,7 @@ registerSketch('sk5', function (p) {
       // left blue bars
       if (bestData[i]) {
         let wLeft = p.map(bestData[i].ratio, 0, maxRatio, 5, maxBarWidth);
+        let percLeft = p.nf(bestData[i].ratio * 100, 1, 1) + "%";
         let fractionLeft = `${bestData[i].cancelled}/${bestData[i].total}`;
 
         p.fill("skyblue");
@@ -143,12 +144,13 @@ registerSketch('sk5', function (p) {
         // percentage inside bar
         p.textAlign(p.LEFT, p.CENTER);
         p.fill('white');
-        p.text(fractionLeft, centerX - wLeft + 5, y + barHeight / 2);
+        p.text(percLeft + " (" + fractionLeft + ")", centerX - wLeft + 5, y + barHeight / 2);
       }
 
       // right red bars
       if (worstData[i]) {
         let wRight = p.map(worstData[i].ratio, 0, maxRatio, 5, maxBarWidth);
+        let percRight = p.nf(worstData[i].ratio * 100, 1, 1) + "%";
         let fractionRight = `${worstData[i].cancelled}/${worstData[i].total}`;
 
         p.fill("crimson");
@@ -164,7 +166,7 @@ registerSketch('sk5', function (p) {
         // percentage inside bar
         p.textAlign(p.RIGHT, p.CENTER);
         p.fill('white');
-        p.text(fractionRight, centerX + wRight - 5, y + barHeight / 2);
+        p.text(percRight + " (" + fractionRight + ")", centerX - wLeft + 5, y + barHeight / 2);
       }
     }
 
