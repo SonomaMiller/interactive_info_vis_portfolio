@@ -166,8 +166,7 @@ registerSketch('sk5', function (p) {
         // percentage inside bar
         p.textAlign(p.RIGHT, p.CENTER);
         p.fill('white');
-        p.text(percRight + " (" + fractionRight + ")", centerX - wLeft + 5, y + barHeight / 2);
-      }
+        p.text(percRight + " (" + fractionRight + ")", centerX + wRight - 5, y + barHeight / 2);      }
     }
 
     // Center Vertical Axis
