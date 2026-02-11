@@ -4,6 +4,7 @@ registerSketch('sk5', function (p) {
   let isPickupMode = true;
   let bestData = [];
   let worstData = [];
+  let topReasons = [];
 
   p.preload = () => {
     table = p.loadTable("ncr_ride_bookings.csv", "csv", "header");
@@ -17,6 +18,7 @@ registerSketch('sk5', function (p) {
 
   function processRideData() {
     let stats = {};
+    let reasonCounts = {};
     let rows = table.getRows();
     let allLocations = [];
 
@@ -27,6 +29,10 @@ registerSketch('sk5', function (p) {
       let custCancel = rows[i].getString(10) === "1" ? 1 : 0;
       let drivCancel = rows[i].getString(12) === "1" ? 1 : 0;
 
+      // reasons for cancellation
+      let custReason = rows[i].getString(11);
+      let drivReason = rows[i].getString(13);
+
       if (!stats[loc]) {
         stats[loc] = { cancelled: 0, total: 0 };
       }
@@ -34,6 +40,12 @@ registerSketch('sk5', function (p) {
       stats[loc].total++;
       if (custCancel === 1 || drivCancel === 1) {
         stats[loc].cancelled++;
+
+        [custReason, drivReason].forEach(r => {
+          if (r && r !== "null" && r !== "") {
+            reasonCounts[r] = (reasonCounts[r] || 0) + 1;
+          }
+        });
       }
     }
 
@@ -51,6 +63,11 @@ registerSketch('sk5', function (p) {
     worstData = allLocations.slice(0, 5);
     bestData = allLocations.slice(-5);
     bestData.reverse();
+
+    topReasons = Object.entries(reasonCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(entry => entry[0]);
   }
 
   p.draw = () => {
@@ -80,7 +97,8 @@ registerSketch('sk5', function (p) {
     p.textAlign(p.CENTER, p.CENTER);
     p.fill('black');
     p.textSize(20);
-    p.text('Best and Worst Uber Destinations', p.width / 2, 50);
+    p.textStyle(p.BOLD);
+    p.text('Best and Worst Uber Destinations in India', p.width / 2, 50);
 
     p.textAlign(p.CENTER, p.CENTER);
     p.fill('gray');
@@ -150,6 +168,28 @@ registerSketch('sk5', function (p) {
     p.stroke(150);
     p.strokeWeight(2);
     p.line(centerX, 120, centerX, 500);
+
+    let boxY = 540;
+    let boxW = 400;
+
+    p.noFill();
+    p.stroke('lightgray');
+    p.strokeWeight(1);
+    p.rect(centerX - boxW / 2, boxY, boxW, 100, 10);
+
+    p.noStroke();
+    p.fill('black');
+    p.textAlign(p.CENTER, p.TOP);
+    p.textSize(14);
+    p.textStyle(p.BOLD);
+    p.text("Top Reasons for Cancellation:", centerX, boxY + 15);
+
+    p.textStyle(p.NORMAL);
+    p.textSize(12);
+    p.fill('black');
+    for (let i = 0; i < topReasons.length; i++) {
+      p.text(`${i + 1}. ${topReasons[i]}`, centerX, boxY + 45 + (i * 18));
+    }
   };
 
   // handle tab switching/toggle clicks
