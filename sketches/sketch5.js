@@ -11,7 +11,7 @@ registerSketch('sk5', function (p) {
   };
 
   p.setup = () => {
-    let canvasHeight = p.max(p.windowHeight, 700);
+    let canvasHeight = p.max(p.windowHeight, 950);
     p.createCanvas(p.windowWidth, canvasHeight);
     processRideData();
     p.noLoop();
@@ -54,7 +54,9 @@ registerSketch('sk5', function (p) {
       let proportion = stats[loc].cancelled / stats[loc].total;
       allLocations.push({
         name: loc,
-        ratio: proportion
+        ratio: proportion,
+        cancelled: stats[loc].cancelled,
+        total: stats[loc].total
       });
     }
 
@@ -126,7 +128,7 @@ registerSketch('sk5', function (p) {
       // left blue bars
       if (bestData[i]) {
         let wLeft = p.map(bestData[i].ratio, 0, maxRatio, 5, maxBarWidth);
-        let percLeft = p.nf(bestData[i].ratio * 100, 1, 1) + "%";
+        let fractionLeft = `${bestData[i].cancelled}/${bestData[i].total}`;
 
         p.fill("skyblue");
         p.noStroke();
@@ -141,13 +143,13 @@ registerSketch('sk5', function (p) {
         // percentage inside bar
         p.textAlign(p.LEFT, p.CENTER);
         p.fill('white');
-        p.text(percLeft, centerX - wLeft + 5, y + barHeight / 2);
+        p.text(fractionLeft, centerX - wLeft + 5, y + barHeight / 2);
       }
 
       // right red bars
       if (worstData[i]) {
         let wRight = p.map(worstData[i].ratio, 0, maxRatio, 5, maxBarWidth);
-        let percRight = p.nf(worstData[i].ratio * 100, 1, 1) + "%";
+        let fractionRight = `${worstData[i].cancelled}/${worstData[i].total}`;
 
         p.fill("crimson");
         p.noStroke();
@@ -162,7 +164,7 @@ registerSketch('sk5', function (p) {
         // percentage inside bar
         p.textAlign(p.RIGHT, p.CENTER);
         p.fill('white');
-        p.text(percRight, centerX + wRight - 5, y + barHeight / 2);
+        p.text(fractionRight, centerX + wRight - 5, y + barHeight / 2);
       }
     }
 
@@ -178,7 +180,7 @@ registerSketch('sk5', function (p) {
     p.noFill();
     p.stroke('lightgray');
     p.strokeWeight(1);
-    p.rect(centerX - boxW / 2, boxY, boxW, 105, 10);
+    p.rect(centerX - boxW / 2, boxY, boxW, 110, 10);
 
     p.noStroke();
     p.fill('black');
