@@ -11,7 +11,7 @@ registerSketch('sk5', function (p) {
   };
 
   p.setup = () => {
-    let canvasHeight = p.max(p.windowHeight, 800);
+    let canvasHeight = p.max(p.windowHeight, 700);
     p.createCanvas(p.windowWidth, canvasHeight);
     processRideData();
     p.noLoop();
@@ -117,7 +117,7 @@ registerSketch('sk5', function (p) {
     const centerX = p.width / 2;
     const barHeight = 40;
     const spacing = 30;
-    const maxBarWidth = 600;
+    const maxBarWidth = 700;
 
     // Auto-scale bar width
     let maxRatio = p.max([...worstData, ...bestData].map(d => d.ratio)) || 0.1;
