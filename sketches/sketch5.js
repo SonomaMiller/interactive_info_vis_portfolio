@@ -1,7 +1,7 @@
 // Homework 5: Uber destination bar chart
 registerSketch('sk5', function (p) {
   let table;
-  let isPickupMode = true;
+  let isPickupMode = false;
   let bestData = [];
   let worstData = [];
   let topReasons = [];
@@ -101,7 +101,8 @@ registerSketch('sk5', function (p) {
     p.fill("black");
     p.textSize(20);
     p.textStyle(p.BOLD);
-    p.text("Best and Worst Uber Destinations in India", p.width / 2, 50);
+    let titleType = isPickupMode ? "Pickup Locations" : "Dropoff Locations";
+    p.text("Best and Worst Uber " + titleType + " in India", p.width / 2, 50);
 
     p.textStyle(p.NORMAL);
     p.textAlign(p.CENTER, p.CENTER);
@@ -166,7 +167,8 @@ registerSketch('sk5', function (p) {
         // percentage inside bar
         p.textAlign(p.RIGHT, p.CENTER);
         p.fill("white");
-        p.text(percRight + " (" + fractionRight + ")", centerX + wRight - 5, y + barHeight / 2);      }
+        p.text(percRight + " (" + fractionRight + ")", centerX + wRight - 5, y + barHeight / 2);
+      }
     }
 
     // Center Vertical Axis
@@ -200,9 +202,10 @@ registerSketch('sk5', function (p) {
 
   // handle tab switching/toggle clicks
   p.mousePressed = () => {
+    // Check if click is inside the toggle switch area
     if (p.mouseX > 20 && p.mouseX < 130 && p.mouseY > 20 && p.mouseY < 50) {
       isPickupMode = !isPickupMode;
-      processRideData();
+      processRideData(); // Re-process with new colIndex
       p.redraw();
     }
   };
