@@ -117,7 +117,7 @@ registerSketch('sk5', function (p) {
     const centerX = p.width / 2;
     const barHeight = 40;
     const spacing = 30;
-    const maxBarWidth = 400;
+    const maxBarWidth = 600;
 
     // Auto-scale bar width
     let maxRatio = p.max([...worstData, ...bestData].map(d => d.ratio)) || 0.1;
